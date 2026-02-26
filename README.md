@@ -179,7 +179,7 @@
         stage.innerHTML = svgContent;
         currentPetSvg = stage.querySelector('.pet-svg'); // Lưu tham chiếu đến SVG mới
         
-        message.innerText = "Bạn ấy đang đợi An đấy...";
+        message.innerText = "Bạn ấy đang đợi bé đấy...";
     }
 
     // Tạo hiệu ứng lấp lánh tung tóe ✨
