@@ -123,7 +123,7 @@
 
 <div id="game-container">
     <div id="selection-screen">
-        <h1>An ơi, chọn một người bạn nhé!</h1>
+        <h1>Bé ơi, chọn một người bạn nhé!</h1>
         <div class="selection-group">
             <div class="pet-card" onclick="startGame('dog')">
                 <svg class="pet-svg" viewBox="0 0 100 100">
@@ -136,7 +136,7 @@
                     <circle class="pet-eye" cx="65" cy="40" r="4" fill="#333"/>
                     <polygon points="50,55 45,50 55,50" fill="#ffb6c1"/> <path d="M20 15 L35 30 L25 40 Z" fill="#f3f3f3"/> <path d="M80 15 L65 30 L75 40 Z" fill="#f3f3f3"/> <path class="pet-tail" d="M80 80 Q 95 70, 90 50" stroke="#ccc" stroke-width="6" fill="none" stroke-linecap="round"/>
                 </svg>
-                <small>Mèo Mây</small>
+                <small>Mèo Nhỏ</small>
             </div>
             <div class="pet-card" onclick="startGame('bird')">
                 <svg class="pet-svg" viewBox="0 0 100 100">
@@ -152,7 +152,7 @@
             </div>
         
         <div class="actions">
-            <button id="feed-btn" class="action-btn" onclick="feedPet()">🥣</button>
+            <button id="feed-btn" class="action-btn" onclick="feedPet()">🍬</button>
             <button id="groom-btn" class="action-btn hidden" onclick="groomPet()">🪮</button>
         </div>
         
@@ -235,7 +235,7 @@
         
         if (clickCount >= 3) {
             statusText.innerText = "Ôi, xinh đẹp tuyệt vời!";
-            message.innerText = "Thú cưng của An là nhất luôn!";
+            message.innerText = "Thú cưng của bé là nhất luôn!";
             document.getElementById('groom-btn').disabled = true;
             
             // Thêm hiệu ứng trái tim cuối cùng
