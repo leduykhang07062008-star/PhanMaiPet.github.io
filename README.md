@@ -2,250 +2,450 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Love - Thế Giới Lung Linh</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thế Giới Thú Cưng Lung Linh</title>
     <style>
+        /* Phong cách tổng thể - Ấm cúng & Lung linh */
         :root {
-            --pink-light: #ffebf2;
-            --gold: #ffd700;
+            --bg-color: #fdfcf5; /* Màu kem nhẹ nhàng */
+            --accent-pink: #ffdae9; /* Hồng pastel */
+            --accent-gold: #fff3b0; /* Vàng kim nhạt */
+            --text-color: #7a6e5f; /* Nâu ấm */
+            --glow-shadow: 0 0 15px rgba(255, 243, 176, 0.8);
         }
 
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden; /* Không cho cuộn trang */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex; justify-content: center; align-items: center;
-            background: #fdf0d5; font-family: 'Segoe UI', sans-serif;
-            overflow: hidden; touch-action: none;
+            touch-action: none; /* Tối ưu cho cảm ứng */
         }
 
-        /* Background: Căn phòng chi tiết */
-        #room {
+        /* --- CĂN PHÒNG HOẠT HÌNH TINH XẢO --- */
+        #game-container {
             width: 100vw; height: 100vh;
-            background: linear-gradient(180deg, #a2d2ff 0%, #ffffff 100%);
-            position: relative; display: flex; flex-direction: column; align-items: center;
+            max-width: 600px; max-height: 900px; /* Giới hạn kích thước trên màn hình lớn */
+            background-image: url('https://img.pikbest.com/origin/09/24/63/61ypIkbEsT49Q.jpg!w700wp'); /* Nền phòng hoạt hình chi tiết */
+            background-size: cover; background-position: center;
+            position: relative;
+            border: 8px solid var(--accent-pink); border-radius: 40px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
         }
 
-        /* Chi tiết căn phòng */
-        .wall-decor {
-            position: absolute; top: 10%; width: 100%; height: 200px;
-            background-image: radial-gradient(#ffafcc 1px, transparent 1px);
-            background-size: 30px 30px; opacity: 0.3;
+        /* Chiếc nệm êm ái cho Pet */
+        #pet-bed {
+            position: absolute; bottom: 15%; left: 50%;
+            transform: translateX(-50%);
+            width: 80%; height: 120px;
+            background-image: url('https://img.pikbest.com/png-images/20240523/cartoon-style-dog-bed-soft-sleep-vector_10578687.png!bw700'); /* Hình ảnh nệm chi tiết */
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            z-index: 10;
         }
 
-        /* Chiếc nệm êm ái */
-        .pet-bed {
-            position: absolute; bottom: 15%;
-            width: 350px; height: 120px;
-            background: #ff8fab;
-            border-radius: 50%;
-            border: 8px solid #fb6f92;
-            box-shadow: 0 15px 0 #ef476f, 0 20px 40px rgba(0,0,0,0.1);
+        /* Container chứa Pet */
+        #pet-container {
+            position: absolute; bottom: 18%; left: 50%;
+            transform: translateX(-50%);
+            width: 200px; height: 200px;
+            z-index: 20;
             display: flex; justify-content: center; align-items: center;
         }
-        .pet-bed::after {
-            content: ''; position: absolute; top: 10px; width: 90%; height: 80%;
-            background: rgba(255,255,255,0.2); border-radius: 50%;
+
+        /* Sticker Pet hoạt hình tinh xảo */
+        #pet-sticker {
+            width: 100%; height: 100%;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+            transition: transform 0.3s ease;
         }
 
-        /* Lớp phủ UI */
-        #ui-overlay {
-            position: absolute; z-index: 100; inset: 0;
-            background: rgba(255,255,255,0.85); backdrop-filter: blur(15px);
+        /* Hiệu ứng lung linh tỏa sáng khi được chải lông */
+        .pet-glow {
+            filter: drop-shadow(0 0 20px var(--accent-gold)) !important;
+            animation: breathe 2s infinite alternate;
+        }
+
+        @keyframes breathe {
+            from { transform: scale(1); }
+            to { transform: scale(1.03); }
+        }
+
+        /* --- VẬT PHẨM TƯƠNG TÁC (KÉO THẢ) --- */
+        .draggable-item {
+            position: absolute;
+            width: 80px; height: 80px;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            cursor: grab;
+            z-index: 100;
+            touch-action: none;
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.15));
+        }
+
+        .draggable-item:active { cursor: grabbing; }
+
+        /* Bát thức ăn (cho Chó/Mèo) */
+        #food-item { bottom: 5%; left: 15%; display: none; }
+        /* Hạt dưa hấu (cho Vẹt) */
+        #seed-item { bottom: 5%; left: 15%; display: none; }
+        /* Cây lược */
+        #comb-item { bottom: 5%; right: 15%; display: none;
+            background-image: url('https://png.pngtree.com/png-vector/20220612/ourmid/pngtree-comb-hair-cartoon-vector-icon-png-image_5033729.png');
+        }
+
+        /* --- UI: MÀN HÌNH CHỌN & ĐẶT TÊN --- */
+        #ui-layer {
+            position: absolute; inset: 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 200;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: 0.8s ease-in-out;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            border-radius: 32px;
         }
 
-        .pet-card {
-            cursor: pointer; transition: 0.3s;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
-        }
-        .pet-card:hover { transform: scale(1.1); }
+        .ui-hide { opacity: 0; transform: translateY(-100%); pointer-events: none; }
 
-        /* Đồ họa thú cưng tinh xảo (SVG) */
-        .pet-box {
-            position: absolute; bottom: 40px; width: 220px; height: 220px;
-            z-index: 50; transition: transform 0.5s;
-        }
+        h1 { font-size: 1.8rem; margin-bottom: 30px; color: #ff8fab; }
 
-        /* Thức ăn & Lược */
-        .item {
+        /* Vùng chọn thú cưng */
+        #pet-selection { display: flex; gap: 20px; margin-bottom: 30px; }
+
+        .select-option {
             width: 100px; height: 100px;
-            position: absolute; bottom: 5%; cursor: grab;
-            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.2));
-            z-index: 200; touch-action: none;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
-        /* Hiệu ứng lung linh ✨ */
-        .sparkle {
-            position: absolute; pointer-events: none;
-            animation: fly 0.8s ease-out forwards;
-            font-size: 24px; z-index: 300;
-        }
-        @keyframes fly {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; }
-        }
+        .select-option:hover { transform: scale(1.1) rotate(5deg); }
+
+        /* Vùng nhập tên */
+        #name-input-container { display: none; text-align: center; }
 
         input {
-            padding: 15px; border-radius: 30px; border: 3px solid #ff8fab;
-            width: 250px; text-align: center; font-size: 1.2rem; margin: 20px;
+            padding: 15px 20px; border-radius: 25px;
+            border: 3px solid var(--accent-pink);
+            font-size: 1.1rem; width: 250px;
+            outline: none; color: var(--text-color);
+            margin-bottom: 20px; text-align: center;
         }
-        .btn {
-            background: #fb6f92; color: white; padding: 15px 40px;
-            border-radius: 30px; border: none; font-weight: bold; cursor: pointer;
+
+        button {
+            padding: 12px 30px; border-radius: 25px;
+            background: #ff8fab; color: white;
+            border: none; font-size: 1rem; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        button:hover { background: #fb6f92; transform: translateY(-3px); }
+
+        /* Nhãn tên Pet trên màn hình chính */
+        #pet-label {
+            position: absolute; top: 12%; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.6);
+            padding: 8px 25px; border-radius: 20px;
+            font-size: 1.4rem; font-weight: bold; color: #fb6f92;
+            text-shadow: 1px 1px white;
+            display: none; z-index: 50;
+        }
+
+        /* --- HIỆU ỨNG SPARKLE (LUNG LINH) --- */
+        .sparkle {
+            position: absolute; pointer-events: none;
+            width: 20px; height: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23fff3b0"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/></svg>');
+            background-size: contain;
+            animation: sparkle-fly 1s ease-out forwards;
+            z-index: 150;
+        }
+
+        @keyframes sparkle-fly {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(1.5) rotate(180deg); opacity: 0; }
         }
 
         .hidden { display: none !important; }
+
     </style>
 </head>
 <body>
 
-<div id="room">
-    <div class="wall-decor"></div>
+<div id="game-container">
+    <div id="pet-bed"></div>
     
-    <div id="ui-overlay">
-        <h1 style="color: #fb6f92;">Chọn bạn nhỏ của bạn</h1>
-        <div style="display: flex; gap: 30px; margin-bottom: 30px;">
-            <div class="pet-card" onclick="preSelect('dog')">🐶<br><small>Cún Con</small></div>
-            <div class="pet-card" onclick="preSelect('cat')">🐱<br><small>Mèo Mây</small></div>
-            <div class="pet-card" onclick="preSelect('bird')">🦜<br><small>Vẹt Xanh</small></div>
+    <div id="pet-label"></div>
+
+    <div id="pet-container">
+        <div id="pet-sticker"></div>
+    </div>
+
+    <div id="food-item" class="draggable-item" style="background-image: url('https://png.pngtree.com/png-vector/20231017/ourmid/pngtree-cartoon-dog-food-bowl-vector-png-image_10199042.png');"></div>
+    <div id="seed-item" class="draggable-item" style="background-image: url('https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-sunflower-seeds-grain-nut-cartoon-png-image_5316496.png');"></div>
+    <div id="comb-item" class="draggable-item"></div>
+
+    <div id="ui-layer">
+        <h1 id="ui-title">Chào bạn, chọn một người bạn nhé!</h1>
+        
+        <div id="pet-selection">
+            <div class="select-option" style="background-image: url('https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-cartoon-golden-retriever-puppy-vector-png-image_10207184.png');" onclick="selectPet('dog')"></div>
+            <div class="select-option" style="background-image: url('https://png.pngtree.com/png-vector/20240131/ourmid/pngtree-cute-calico-cat-sit-cartoon-png-image_11579728.png');" onclick="selectPet('cat')"></div>
+            <div class="select-option" style="background-image: url('https://png.pngtree.com/png-vector/20230906/ourmid/pngtree-blue-macaw-parrot-animal-cartoon-vector-png-image_10011504.png');" onclick="selectPet('parrot')"></div>
         </div>
-        <div id="name-box" class="hidden">
-            <input type="text" id="input-name" placeholder="Đặt tên cho bạn ấy...">
+
+        <div id="name-input-container">
+            <input type="text" id="pet-name-input" placeholder="Tên của bạn ấy là gì nhỉ?" maxlength="12">
             <br>
-            <button class="btn" onclick="startGame()">Vào Phòng Thôi!</button>
+            <button onclick="confirmName()">Bắt đầu chơi</button>
         </div>
     </div>
-
-    <div class="pet-bed">
-        <div id="pet-container" class="pet-box"></div>
-    </div>
-
-    <div id="item-food" class="item hidden"></div>
-    <div id="item-comb" class="item hidden">🪮</div>
-    
-    <div id="pet-label" style="position: absolute; top: 10%; font-size: 2rem; color: #fb6f92; font-weight: bold; text-shadow: 2px 2px white;"></div>
 </div>
 
 <script>
-    let selectedPet = '';
-    let isDragging = false;
-    let dragItem = null;
-    let swipeCount = 0;
-    let lastX = 0;
-    let feedProgress = 0;
-
-    const items = {
-        dog: { icon: '🥣', food: '🍖', name: 'Xương Ngon' },
-        cat: { icon: '🥣', food: '🐟', name: 'Cá Ngừ' },
-        bird: { icon: '🍉', food: '🍉', name: 'Hạt Dưa' }
+    // Dữ liệu hình ảnh và vật phẩm cho từng loại pet (sử dụng link internet)
+    const petData = {
+        'dog': {
+            sticker: 'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-cartoon-golden-retriever-puppy-vector-png-image_10207184.png',
+            foodItem: 'food-item'
+        },
+        'cat': {
+            sticker: 'https://png.pngtree.com/png-vector/20240131/ourmid/pngtree-cute-calico-cat-sit-cartoon-png-image_11579728.png',
+            foodItem: 'food-item'
+        },
+        'parrot': {
+            sticker: 'https://png.pngtree.com/png-vector/20230906/ourmid/pngtree-blue-macaw-parrot-animal-cartoon-vector-png-image_10011504.png',
+            foodItem: 'seed-item'
+        }
     };
 
-    function preSelect(type) {
-        selectedPet = type;
-        document.getElementById('name-box').classList.remove('hidden');
+    let currentPetType = '';
+    let isDragging = false;
+    let dragItem = null;
+    let offsetX, offsetY;
+    let feedCount = 0;
+    let isFed = false;
+    let groomSwipeCount = 0;
+    let lastSwipeX = 0;
+
+    // --- BƯỚC 1: CHỌN PET ---
+    function selectPet(type) {
+        currentPetType = type;
+        // Ẩn vùng chọn, hiện vùng nhập tên
+        document.getElementById('pet-selection').style.display = 'none';
+        document.getElementById('ui-title').innerText = "Tên của người bạn mới là...";
+        document.getElementById('name-input-container').style.display = 'block';
     }
 
-    function startGame() {
-        const name = document.getElementById('input-name').value || "Bé cưng";
-        document.getElementById('pet-label').innerText = name;
-        document.getElementById('ui-overlay').style.transform = 'translateY(-100%)';
+    // --- BƯỚC 2: XÁC NHẬN TÊN & BẮT ĐẦU ---
+    function confirmName() {
+        const nameInput = document.getElementById('pet-name-input').value.trim();
+        const petName = nameInput || "Bé Cưng"; // Tên mặc định nếu không nhập
+
+        // Ẩn lớp UI
+        document.getElementById('ui-layer').classList.add('ui-hide');
         
-        renderPet(selectedPet);
-        setupFood();
+        // Hiện nhãn tên
+        const label = document.getElementById('pet-label');
+        label.innerText = petName;
+        label.style.display = 'block';
+
+        // Hiển thị Pet và Vật phẩm tương ứng
+        initGame(petName);
     }
 
-    function renderPet(type) {
-        const container = document.getElementById('pet-container');
-        let svg = '';
-        if(type === 'dog') {
-            svg = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#fec89a"/><circle cx="30" cy="40" r="5" fill="#333"/><circle cx="70" cy="40" r="5" fill="#333"/><path d="M40 70 Q 50 80 60 70" fill="none" stroke="#fb6f92" stroke-width="4"/></svg>`;
-        } else if(type === 'cat') {
-            svg = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#e5e5e5"/><circle cx="35" cy="45" r="4" fill="#333"/><circle cx="65" cy="45" r="4" fill="#333"/><path d="M45 60 Q 50 65 55 60" fill="none" stroke="#333" stroke-width="2"/></svg>`;
+    // --- KHỞI TẠO TRÒ CHƠI CHÍNH ---
+    function initGame(name) {
+        const data = petData[currentPetType];
+        
+        // Đặt hình ảnh Pet
+        const petSticker = document.getElementById('pet-sticker');
+        petSticker.style.backgroundImage = `url('${data.sticker}')`;
+
+        // Hiển thị đúng loại thức ăn
+        const foodId = data.foodItem;
+        const foodEl = document.getElementById(foodId);
+        foodEl.style.display = 'block';
+        addDragListeners(foodEl); // Thêm sự kiện kéo thả cho thức ăn
+
+        // Thêm sự kiện kéo thả cho lược (nhưng ẩn lúc đầu)
+        addDragListeners(document.getElementById('comb-item'));
+    }
+
+    // --- XỬ LÝ KÉO THẢ (NHẤN GIỮ & VUỐT) ---
+    function addDragListeners(el) {
+        // Cho chuột
+        el.addEventListener('mousedown', dragStart);
+        // Cho cảm ứng (điện thoại)
+        el.addEventListener('touchstart', dragStart, { passive: false });
+    }
+
+    function dragStart(e) {
+        if (isDragging) return;
+        isDragging = true;
+        dragItem = e.target;
+        
+        // Tạo hiệu ứng phóng to nhẹ khi cầm
+        dragItem.style.transition = 'transform 0.1s ease';
+        dragItem.style.transform = 'scale(1.1)';
+
+        const rect = dragItem.getBoundingClientRect();
+        
+        if (e.type === 'touchstart') {
+            offsetX = e.touches[0].clientX - rect.left;
+            offsetY = e.touches[0].clientY - rect.top;
         } else {
-            svg = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#80ed99"/><path d="M70 45 L90 50 L70 55" fill="#ffb703"/><circle cx="60" cy="40" r="4" fill="#333"/></svg>`;
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
         }
-        container.innerHTML = svg;
+
+        document.addEventListener('mousemove', dragMove);
+        document.addEventListener('touchmove', dragMove, { passive: false });
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('touchend', dragEnd);
     }
 
-    function setupFood() {
-        const foodItem = document.getElementById('item-food');
-        foodItem.innerHTML = items[selectedPet].food;
-        foodItem.classList.remove('hidden');
-        foodItem.style.left = '10%';
-        makeDraggable(foodItem);
-    }
-
-    function makeDraggable(el) {
-        el.onmousedown = start;
-        el.ontouchstart = start;
-
-        function start(e) {
-            isDragging = true;
-            dragItem = el;
-            el.style.transition = 'none';
-        }
-    }
-
-    window.onmousemove = move;
-    window.ontouchmove = move;
-    window.onmouseup = end;
-    window.ontouchend = end;
-
-    function move(e) {
+    function dragMove(e) {
         if (!isDragging || !dragItem) return;
-        const x = e.clientX || e.touches[0].clientX;
-        const y = e.clientY || e.touches[0].clientY;
         
-        dragItem.style.left = (x - 50) + 'px';
-        dragItem.style.top = (y - 50) + 'px';
+        let x, y;
+        if (e.type === 'touchmove') {
+            e.preventDefault(); // Ngăn cuộn trang trên điện thoại
+            x = e.touches[0].clientX;
+            y = e.touches[0].clientY;
+        } else {
+            x = e.clientX;
+            y = e.clientY;
+        }
 
-        const pet = document.getElementById('pet-container').getBoundingClientRect();
-        if (x > pet.left && x < pet.right && y > pet.top && y < pet.bottom) {
-            createSparkle(x, y);
-            if (dragItem.id === 'item-food') feedProgress++;
-            if (dragItem.id === 'item-comb') {
-                if (Math.abs(x - lastX) > 30) {
-                    swipeCount++;
-                    lastX = x;
+        // Cập nhật vị trí vật phẩm theo ngón tay
+        const containerRect = document.getElementById('game-container').getBoundingClientRect();
+        let left = x - containerRect.left - offsetX;
+        let top = y - containerRect.top - offsetY;
+
+        // Giới hạn trong container
+        left = Math.max(0, Math.min(left, containerRect.width - dragItem.offsetWidth));
+        top = Math.max(0, Math.min(top, containerRect.height - dragItem.offsetHeight));
+
+        dragItem.style.left = left + 'px';
+        dragItem.style.top = top + 'px';
+
+        // Kiểm tra va chạm với Pet
+        checkInteraction(x, y);
+    }
+
+    function dragEnd() {
+        if (!isDragging || !dragItem) return;
+        isDragging = false;
+
+        // Trả lại kích thước bình thường
+        dragItem.style.transform = 'scale(1)';
+        dragItem.style.transition = 'left 0.5s ease, top 0.5s ease, transform 0.1s ease';
+
+        // Logic sau khi thả vật phẩm
+        if (dragItem.id === 'food-item' || dragItem.id === 'seed-item') {
+            if (!isFed) {
+                // Nếu chưa ăn no, trả bát về chỗ cũ (bạn có thể thêm logic này nếu muốn)
+            }
+        } else if (dragItem.id === 'comb-item') {
+             // Reset bộ đếm vuốt nếu thả lược ra
+             groomSwipeCount = 0;
+        }
+
+        dragItem = null;
+        document.removeEventListener('mousemove', dragMove);
+        document.removeEventListener('touchmove', dragMove);
+        document.removeEventListener('mouseup', dragEnd);
+        document.removeEventListener('touchend', dragEnd);
+    }
+
+    // --- KIỂM TRA TƯƠNG TÁC KHI VUỐT QUA PET ---
+    function checkInteraction(x, y) {
+        const petSticker = document.getElementById('pet-sticker');
+        const petRect = petSticker.getBoundingClientRect();
+
+        // Kiểm tra xem ngón tay/chuột có nằm trên Pet không
+        if (x > petRect.left && x < petRect.right && y > petRect.top && y < petRect.bottom) {
+            
+            // 1. Logic cho ăn
+            if ((dragItem.id === 'food-item' || dragItem.id === 'seed-item') && !isFed) {
+                feedCount++;
+                createSparkles(x, y, 2); // Tạo ít sao khi ăn
+                
+                // Hiệu ứng ăn (giật nhẹ)
+                petSticker.style.transform = 'scale(1.05)';
+                setTimeout(() => petSticker.style.transform = 'scale(1)', 100);
+
+                if (feedCount > 30) { // Cần vuốt qua lại một lúc
+                    isFed = true;
+                    // Ẩn bát thức ăn, hiện lược
+                    dragItem.style.display = 'none';
+                    document.getElementById('comb-item').style.display = 'block';
+                    createSparkles(petRect.left + petRect.width/2, petRect.top + petRect.height/2, 15); // Sao lớn khi no
+                    petSticker.style.transition = 'transform 0.5s ease';
                 }
+            }
+            
+            // 2. Logic chải lông (vuốt đổi hướng 5 lần)
+            else if (dragItem.id === 'comb-item' && isFed) {
+                if (Math.abs(x - lastSwipeX) > 20) { // Vuốt đủ dài
+                    const currentDirection = x > lastSwipeX ? 'right' : 'left';
+                    
+                    if (this.lastDirection && this.lastDirection !== currentDirection) {
+                        groomSwipeCount++;
+                        createSparkles(x, y, 3);
+                        
+                        // Hiệu ứng chải (nghiêng nhẹ)
+                        petSticker.style.transform = `rotate(${currentDirection === 'right' ? 3 : -3}deg)`;
+
+                        if (groomSwipeCount >= 5) {
+                            // HOÀN THÀNH: Pet lung linh
+                            petSticker.classList.add('pet-glow');
+                            createSparkles(petRect.left + petRect.width/2, petRect.top + petRect.height/2, 25);
+                            
+                            // Ẩn lược
+                            dragItem.style.display = 'none';
+                            groomSwipeCount = -100; // Ngăn đếm tiếp
+                        }
+                    }
+                    this.lastDirection = currentDirection;
+                }
+                lastSwipeX = x;
             }
         }
     }
 
-    function end() {
-        if (!isDragging) return;
-        isDragging = false;
-        
-        if (feedProgress > 50) {
-            document.getElementById('item-food').classList.add('hidden');
-            const comb = document.getElementById('item-comb');
-            comb.classList.remove('hidden');
-            comb.style.right = '10%';
-            comb.style.bottom = '5%';
-            makeDraggable(comb);
-            feedProgress = 0;
-        }
+    // --- TẠO HIỆU ỨNG SAO LUNG LINH ---
+    function createSparkles(x, y, count) {
+        const container = document.getElementById('game-container');
+        const containerRect = container.getBoundingClientRect();
 
-        if (swipeCount >= 10) { // 5 lần qua lại = 10 lần đổi hướng
-            document.getElementById('pet-label').innerText += " ✨ Lung Linh!";
-            document.getElementById('pet-container').style.filter = "drop-shadow(0 0 20px gold)";
+        for (let i = 0; i < count; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            
+            // Vị trí xuất hiện (tương đối với container)
+            sparkle.style.left = (x - containerRect.left - 10) + 'px';
+            sparkle.style.top = (y - containerRect.top - 10) + 'px';
+            
+            // Hướng bay ngẫu nhiên
+            const dx = (Math.random() - 0.5) * 150 + 'px';
+            const dy = (Math.random() - 0.5) * 150 + 'px';
+            sparkle.style.setProperty('--dx', dx);
+            sparkle.style.setProperty('--dy', dy);
+            
+            container.appendChild(sparkle);
+            
+            // Xóa sao sau khi diễn xong animation
+            setTimeout(() => sparkle.remove(), 1000);
         }
-        
-        if(dragItem) dragItem.style.transition = '0.5s';
-        dragItem = null;
     }
 
-    function createSparkle(x, y) {
-        const s = document.createElement('div');
-        s.className = 'sparkle';
-        s.innerHTML = '✨';
-        s.style.left = x + 'px';
-        s.style.top = y + 'px';
-        s.style.setProperty('--x', (Math.random() - 0.5) * 100 + 'px');
-        s.style.setProperty('--y', (Math.random() - 0.5) * 100 + 'px');
-        document.body.appendChild(s);
-        setTimeout(() => s.remove(), 800);
-    }
 </script>
+
 </body>
 </html>
